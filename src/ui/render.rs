@@ -627,6 +627,11 @@ impl App {
         match self.mode {
             Mode::Nav | Mode::Edit => (),
             Mode::Prompt => {
+                let overlay_y = self
+                    .suggestions
+                    .as_ref()
+                    .map_or(h - 1, |menu| menu.visible(h).0 - 1);
+                f.render_widget(Clear, Rect::new(0, overlay_y, w, h - overlay_y));
                 if let Some(menu) = &self.suggestions {
                     let (top, _, _) = menu.visible(h);
                     put(
@@ -638,7 +643,9 @@ impl App {
                         " Sugestões • Tab/↑/↓ escolher • Enter completar • Esc fechar",
                         bar,
                     );
-                    for (y, selected, word) in menu.rows(h) {
+                    let column = menu.description_column().min(w);
+                    for (y, selected, word, description) in menu.rows(h) {
+                        let row_style = if selected { active.bg(muted) } else { bar };
                         put(
                             f,
                             0,
@@ -646,8 +653,9 @@ impl App {
                             w,
                             1,
                             &format!(" {} {}", if selected { "▸" } else { " " }, word),
-                            if selected { active.bg(muted) } else { bar },
+                            row_style,
                         );
+                        put(f, column, y, w - column, 1, description, row_style);
                     }
                 }
                 self.editor_line(f, 0, h - 1, w, ": ", bar)

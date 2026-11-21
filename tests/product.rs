@@ -592,11 +592,32 @@ fn colon_completion_selects_edits_and_never_runs_on_accept() -> Result {
     type_text(&mut a, ":cop");
     a.event(key(K::Tab));
     term.draw(|f| a.draw(f)).unwrap();
-    let screen = format!("{:?}", term.backend().buffer());
-    assert!(screen.contains("copiar-externo"));
+    let line = |term: &Terminal<TestBackend>, y| {
+        (0..80)
+            .map(|x| term.backend().buffer()[(x, y)].symbol())
+            .collect::<String>()
+            .trim_end()
+            .to_string()
+    };
+    assert_eq!(
+        line(&term, 20),
+        " ▸ copia           Salva uma cópia em outro arquivo"
+    );
+    assert_eq!(
+        line(&term, 21),
+        "   copiar          Copia a seleção para colar no clisheet"
+    );
+    assert_eq!(
+        line(&term, 22),
+        "   copiar-externo  Copia a seleção para o clipboard externo"
+    );
+    assert_eq!(line(&term, 23), ": cop");
     a.event(key(K::Down));
     a.event(key(K::Enter));
     assert_eq!(a.editor.text, "copiar");
+    term.draw(|f| a.draw(f)).unwrap();
+    assert_eq!(line(&term, 23), ": copiar");
+    assert!(line(&term, 22).contains("Cont"));
     assert!(matches!(a.mode, Mode::Prompt));
     a.event(key(K::Esc));
 
