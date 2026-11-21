@@ -626,7 +626,32 @@ impl App {
         );
         match self.mode {
             Mode::Nav | Mode::Edit => (),
-            Mode::Prompt => self.editor_line(f, 0, h - 1, w, ": ", bar),
+            Mode::Prompt => {
+                if let Some(menu) = &self.suggestions {
+                    let (top, _, _) = menu.visible(h);
+                    put(
+                        f,
+                        0,
+                        top - 1,
+                        w,
+                        1,
+                        " Sugestões • Tab/↑/↓ escolher • Enter completar • Esc fechar",
+                        bar,
+                    );
+                    for (y, selected, word) in menu.rows(h) {
+                        put(
+                            f,
+                            0,
+                            y,
+                            w,
+                            1,
+                            &format!(" {} {}", if selected { "▸" } else { " " }, word),
+                            if selected { active.bg(muted) } else { bar },
+                        );
+                    }
+                }
+                self.editor_line(f, 0, h - 1, w, ": ", bar)
+            }
             Mode::Help => {
                 let boxarea = Rect::new(1, 2, w - 2, h - 4);
                 f.render_widget(Clear, boxarea);

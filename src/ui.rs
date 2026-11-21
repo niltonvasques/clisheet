@@ -1,4 +1,5 @@
 mod commands;
+mod completion;
 mod editor;
 mod formula;
 mod render;
@@ -80,6 +81,7 @@ pub struct App {
     pub v: View,
     views: HashMap<u32, View>,
     pub mode: Mode,
+    suggestions: Option<completion::Suggestions>,
     pub editor: Editor,
     pub status: String,
     pub theme: bool,
@@ -131,6 +133,7 @@ impl App {
             v: View::default(),
             views: HashMap::new(),
             mode: Mode::Nav,
+            suggestions: None,
             editor: Editor::default(),
             status: status.into(),
             theme: true,
@@ -256,6 +259,8 @@ impl App {
         Ok(())
     }
     fn prompt(&mut self, s: &str) {
+        self.suggestions = None;
+        self.ref_cursor = None;
         self.editor = Editor::new(s);
         self.mode = Mode::Prompt
     }
@@ -429,6 +434,7 @@ impl App {
             Event::Paste(text) => match self.mode {
                 Mode::Edit | Mode::Prompt | Mode::Files(_) => {
                     self.ref_span = None;
+                    self.suggestions = None;
                     self.editor.replace(&text);
                     Ok(())
                 }
@@ -451,6 +457,9 @@ impl App {
         self.selection_scroll = None;
         let ctrl = k.modifiers.contains(M::CONTROL);
         let shift = k.modifiers.contains(M::SHIFT);
+        if matches!(self.mode, Mode::Prompt) && self.completion_key(k) {
+            return Ok(());
+        }
         if k.code == K::Esc {
             self.restore_edit_view()?;
             self.mode = Mode::Nav;
@@ -685,6 +694,9 @@ impl App {
     }
 
     fn mouse(&mut self, m: MouseEvent) -> Result {
+        if matches!(self.mode, Mode::Prompt) && self.completion_mouse(m) {
+            return Ok(());
+        }
         if !matches!(m.kind, MK::Moved) {
             self.selection_scroll = None;
         }

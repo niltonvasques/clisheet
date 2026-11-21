@@ -573,3 +573,49 @@ fn dark_theme_adapts_workbook_colors_and_restores_them() -> Result {
     );
     Ok(())
 }
+
+#[test]
+fn colon_completion_selects_edits_and_never_runs_on_accept() -> Result {
+    let mut a = app()?;
+    let mut term = Terminal::new(TestBackend::new(80, 24)).unwrap();
+    let type_text = |a: &mut App, s: &str| {
+        for ch in s.chars() {
+            a.event(key(K::Char(ch)))
+        }
+    };
+    type_text(&mut a, ":sai");
+    a.event(key(K::Tab));
+    assert_eq!(a.editor.text, "sair");
+    assert!(!a.quit);
+    a.event(key(K::Esc));
+
+    type_text(&mut a, ":cop");
+    a.event(key(K::Tab));
+    term.draw(|f| a.draw(f)).unwrap();
+    let screen = format!("{:?}", term.backend().buffer());
+    assert!(screen.contains("copiar-externo"));
+    a.event(key(K::Down));
+    a.event(key(K::Enter));
+    assert_eq!(a.editor.text, "copiar");
+    assert!(matches!(a.mode, Mode::Prompt));
+    a.event(key(K::Esc));
+
+    type_text(&mut a, ":formato perc");
+    a.event(key(K::Tab));
+    assert_eq!(a.editor.text, "formato percentual");
+    a.event(key(K::Esc));
+
+    type_text(&mut a, ":");
+    a.event(key(K::Tab));
+    a.event(key(K::BackTab));
+    a.event(key(K::Esc));
+    assert!(matches!(a.mode, Mode::Prompt));
+    assert_eq!(a.editor.text, "");
+    type_text(&mut a, "irx B2");
+    a.event(key(K::Home));
+    a.event(key(K::Right));
+    a.event(key(K::Right));
+    a.event(key(K::Tab));
+    assert_eq!(a.editor.text, "ir B2");
+    Ok(())
+}

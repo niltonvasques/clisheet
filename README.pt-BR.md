@@ -61,7 +61,7 @@ Em `vendas.xlsx`, D2 e D3 calculam quantidade × preço. D4 mostra o total da ta
 | Editar e ajustar largura | Duplo clique na célula edita. Arrastar a divisória muda a largura, duplo clique ajusta ao conteúdo |
 | Rolagem e menu de contexto | Roda, Shift+roda para horizontal, botão direito para ações |
 
-O seletor de arquivos aceita caminhos digitados e navegação por diretórios. Use `:` para chamar uma ação sem depender dos atalhos do terminal. Exemplos de comandos:
+O seletor de arquivos aceita caminhos digitados e navegação por diretórios. Use `:` para chamar uma ação sem depender dos atalhos do terminal. Pressione Tab após `:` ou um prefixo para completar um comando. Se houver várias opções, navegue com Tab/Shift+Tab ou as setas e pressione Enter para inserir a opção. Outro Enter executa o comando. Esc fecha a lista. Exemplos de comandos:
 
 | Digite e confirme com Enter | Resultado |
 |---|---|

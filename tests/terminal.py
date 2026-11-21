@@ -171,3 +171,14 @@ with tempfile.TemporaryDirectory() as tmp:
         app.send(b'\x11')
         app.finish()
     print('PTY: seleção de quatro células enviada como TSV ao auxiliar local e via OSC 52.')
+
+with tempfile.TemporaryDirectory() as tmp:
+    app = Session(['--no-mouse'], Path(tmp))
+    app.send(b':cop\t')
+    app.wait_for('Sugestões'.encode())
+    app.send(b'\x1b[B\r')  # choose copiar
+    app.send(b'\r')         # run it
+    app.wait_for(b'clipboard interno')
+    app.send(b':sai\t\r')
+    app.finish()
+    print('PTY: Tab abriu sugestões, Enter escolheu copiar e :sai + Tab completou sair.')

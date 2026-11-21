@@ -61,7 +61,7 @@ In `vendas.xlsx`, D2 and D3 multiply quantity by price. D4 is the table total, w
 | Edit or resize | Double-click a cell to edit. Drag a column divider to resize, or double-click it to fit the contents |
 | Scroll or open the context menu | Mouse wheel, Shift+wheel for horizontal scrolling, right-click for actions |
 
-The file picker supports directory navigation and direct path entry. Type `:` to enter a command when the terminal intercepts a shortcut. Enter the command names as shown and press Enter.
+The file picker supports directory navigation and direct path entry. Type `:` to enter a command when the terminal intercepts a shortcut. Press Tab after `:` or a prefix to complete a command. When several match, use Tab/Shift+Tab or the arrow keys to select one, then Enter to insert it. Press Enter again to run the command. Esc dismisses the list. Enter the command names as shown and press Enter.
 
 | Command | Effect |
 |---|---|
