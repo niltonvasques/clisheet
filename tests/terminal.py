@@ -139,3 +139,35 @@ with tempfile.TemporaryDirectory() as tmp:
     simple.send(b'\x11')
     simple.finish()
     print('PTY: Ctrl+S salvou duas vezes no XLSX externo aberto.')
+
+# Keep the desktop clipboard untouched. Exercise the helper's stdin contract
+# and verify the actual OSC 52 bytes written to a remote terminal.
+from unittest.mock import patch
+from base64 import b64encode
+
+with tempfile.TemporaryDirectory() as tmp:
+    root = Path(tmp)
+    helper = root / 'wl-copy'
+    helper.write_text('#!/bin/sh\ncat > "$TEST_CLIPBOARD"\n')
+    helper.chmod(0o755)
+    captured = root / 'clipboard.tsv'
+    expected = 'Café\t2\nChá\t3'.encode()
+    path = ROOT / 'examples/xlsx/vendas.xlsx'
+    env = dict(os.environ, WAYLAND_DISPLAY='test', TEST_CLIPBOARD=str(captured),
+               PATH=str(root) + os.pathsep + os.environ['PATH'])
+    for key in ['SSH_TTY', 'SSH_CONNECTION', 'SSH_CLIENT']:
+        env.pop(key, None)
+    with patch.dict(os.environ, env, clear=True):
+        app = Session([path, '--read-only'], root)
+        app.send(b':ir A2:B3\r:copiar-externo\r')
+        app.wait_for(b'wl-copy')
+        assert captured.read_bytes() == expected
+        app.send(b'\x11')
+        app.finish()
+    with patch.dict(os.environ, SSH_TTY='/dev/pts/test'):
+        app = Session([path, '--read-only', '--osc52'], root)
+        app.send(b':ir A2:B3\r\x03')
+        app.wait_for(b'\x1b]52;c;' + b64encode(expected) + b'\x07')
+        app.send(b'\x11')
+        app.finish()
+    print('PTY: seleção de quatro células enviada como TSV ao auxiliar local e via OSC 52.')

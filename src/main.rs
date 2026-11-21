@@ -50,7 +50,7 @@ struct Args {
     /// Desativa a captura de mouse.
     #[arg(long)]
     no_mouse: bool,
-    /// Envia cópias ao clipboard pelo protocolo OSC 52 em terminais compatíveis.
+    /// Envia cópias ao clipboard externo (desktop local ou OSC 52 no terminal).
     #[arg(long)]
     osc52: bool,
     /// Localidade de números, datas e fórmulas.

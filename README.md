@@ -78,7 +78,7 @@ The file picker supports directory navigation and direct path entry. Type `:` to
 | `:nota Conferir preço`, `:ler-nota` | Write or read a cell note |
 | `:colar valores`, `:colar formulas`, `:colar formato`, `:colar transpor` | Paste values, formulas, formatting, or a transposed block |
 
-Pasting writes to every position in the destination rectangle, including hidden rows. A cut updates the source once the paste completes. To paste external TSV data, use your terminal emulator’s paste command, often Ctrl+Shift+V. Bracketed paste supports tabs, rows, and quoted fields. For remote sessions, allocate a terminal with `ssh -t`. Enable `--osc52` to copy up to 100,000 bytes to the clipboard of a compatible terminal, including over SSH.
+Pasting writes to every position in the destination rectangle, including hidden rows. A cut updates the source once the paste completes. To paste external TSV data, use your terminal emulator’s paste command, often Ctrl+Shift+V. Bracketed paste supports tabs, rows, and quoted fields. For remote sessions, allocate a terminal with `ssh -t`. Use `:copiar-externo` to copy the selection as TSV to the system clipboard. Local sessions try wl-copy, xclip, xsel, or pbcopy when available, then fall back to OSC 52. Enable `--osc52` for external copying with Ctrl+C and Ctrl+X. OSC 52 allows you to copy up to 100,000 bytes to the clipboard of a compatible terminal, including over SSH.
 
 The default theme is `light`. To start in dark mode, save `{"theme":"dark"}` in `~/.config/clisheet/config.json` or `$XDG_CONFIG_HOME/clisheet/config.json`. Override the setting for one run with `--theme light` or `--theme dark`. Type `:tema` and press Enter to switch while editing a workbook. The theme affects the display only.
 

@@ -28,7 +28,7 @@ pub const MENUS: [&str; 8] = [
 // Left column is an executable command. Ellipses identify parameters entered in the command line.
 pub const ACTIONS:[&str;8]=[
 "abrir|salvar|copia|importar tab utf-8 …|exportar seleção virgula utf-8 …|exportar aba tab utf-8 …|sair",
-"editar|desfazer|refazer|copiar|recortar|colar|colar valores|colar formulas|colar formato|colar transpor|limpar|limpar-formato|limpar-tudo|preencher …|baixo|direita|serie 1|buscar valor …|buscar original …|buscar formula …|substituir seleção antigo => novo|substituir aba antigo => novo|substituir pasta antigo => novo",
+"editar|desfazer|refazer|copiar|copiar-externo|recortar|colar|colar valores|colar formulas|colar formato|colar transpor|limpar|limpar-formato|limpar-tudo|preencher …|baixo|direita|serie 1|buscar valor …|buscar original …|buscar formula …|substituir seleção antigo => novo|substituir aba antigo => novo|substituir pasta antigo => novo",
 "ir …|congelar|descongelar|largura 14|altura 2|autoajustar|ocultar-linhas|mostrar-linhas|ocultar-colunas|mostrar-colunas|proxima-aba|aba-anterior|tema",
 "nova-aba|renomear-aba …|duplicar-aba|excluir-aba|mover-aba 1|ocultar-aba|mostrar-aba …|inserir-linhas|inserir-colunas|excluir-linhas|excluir-colunas|link …|nota …|ler-nota|remover-nota",
 "negrito|italico|sublinhado|borda|quebra|esquerda|centro|direita-alinhar|formato geral|formato numero|formato moeda|formato percentual|formato data|formato hora|formato texto|formato personalizado …|cor #FFFFFF|fundo #315877|mesclar|desmesclar|condicional duplicados|condicional maior 0|condicional entre 0 10",

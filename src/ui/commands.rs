@@ -53,15 +53,16 @@ impl App {
                 self.book.history(op == "refazer")?;
                 self.repair_sheet(id)
             }
-            "copiar" | "recortar" => {
+            "copiar" | "copiar-externo" | "recortar" => {
                 if op == "recortar" && self.book.readonly {
                     return Err("Somente leitura".into());
                 }
                 self.clip = Some(self.book.clipboard(s, a, op == "recortar")?);
                 self.status = format!("Bloco {} no clipboard interno", a.address());
-                if self.osc52 {
-                    crate::terminal::copy_osc52(std::io::stdout(), &self.clip.as_ref().unwrap().tsv)
-                        .map_err(|e| e.to_string())?
+                if op == "copiar-externo" || self.osc52 {
+                    let via = crate::terminal::copy_external(&self.clip.as_ref().unwrap().tsv)
+                        .map_err(|e| e.to_string())?;
+                    self.status = format!("{} • clipboard externo: {via}", a.address());
                 }
             }
             "colar" => {
