@@ -2,9 +2,9 @@
 
 Editor de planilhas XLSX no terminal, escrito em Rust. Abre pastas com várias abas, recalcula fórmulas localmente e permite editar por teclado ou mouse. Para experimentar, use o exemplo de resumo. Ele tem duas abas e uma fórmula que depende do preço de um produto.
 
-![clisheet aberto na planilha de exemplo Vendas](docs/images/vendas-tui.png)
+[![Assistir à demonstração do clisheet na planilha Vendas](docs/images/vendas-tui.png)](docs/media/clisheet-demo.mp4)
 
-*clisheet rodando com `examples/xlsx/vendas.xlsx`, em modo somente leitura e tema escuro.*
+[**Assistir à demonstração em MP4 (27 s)**](docs/media/clisheet-demo.mp4) · Na tabela de vendas, mudar a quantidade de café de 2 para 4 recalcula o total de 35 para 55. O vídeo mostra a fórmula, a seleção de um intervalo, desfazer/refazer, a troca de tema e o resultado após salvar e reabrir o XLSX.
 
 ## Executar
 
