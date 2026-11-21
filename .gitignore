@@ -1,1 +1,7 @@
 /target
+
+# Arquivos locais com dados do usuário (cópias e exportações na raiz)
+/*.xlsx
+/*.csv
+/*.tsv
+*.xlsx.bak
